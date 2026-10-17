@@ -2,6 +2,7 @@ package com.uxuxx.uxt;
 
 import com.uxuxx.uxt.gui.ClickGUI;
 import com.uxuxx.uxt.render.ESPRenderer;
+import com.uxuxx.uxt.render.HudRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -18,6 +19,7 @@ public class UXTClient implements ClientModInitializer {
     private static KeyBinding guiKeyX;
     private static KeyBinding guiKeyZ;
     private static boolean gammaChecked = false;
+    private static boolean configLoaded = false;
 
     @Override
     public void onInitializeClient() {
@@ -25,6 +27,7 @@ public class UXTClient implements ClientModInitializer {
         clickGUI = new ClickGUI();
 
         ESPRenderer.register();
+        HudRenderer.register();
 
         guiKeyX = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "Open GUI (X)",
@@ -48,6 +51,12 @@ public class UXTClient implements ClientModInitializer {
                 }
             }
 
+            if (!configLoaded) {
+                configLoaded = true;
+                ConfigManager.load();
+            }
+
+            ConfigManager.tick();
             moduleManager.onTick(client);
 
             while (guiKeyX.wasPressed() || guiKeyZ.wasPressed()) {
@@ -56,6 +65,7 @@ public class UXTClient implements ClientModInitializer {
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+            ConfigManager.save();
             for (Module module : moduleManager.getModules()) {
                 module.forceDisable();
             }

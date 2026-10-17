@@ -59,6 +59,7 @@
 ## Misc
 
 - **Timer** - Change game speed
+- **HUD** - Show enabled modules, coordinates and FPS
 
 ## Controls
 
@@ -66,6 +67,10 @@
 - Single click - Toggle module
 - Double click - Open settings
 - INFO button - View info
+
+## Config
+
+Module states and settings are saved automatically to `config/uxt-client.cfg` and restored on the next launch.
 
 ## Installation
 

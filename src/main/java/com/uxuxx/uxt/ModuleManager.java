@@ -41,6 +41,7 @@ public class ModuleManager {
         modules.add(new ChestESPModule());
         modules.add(new ItemESPModule());
         modules.add(new MobESPModule());
+        modules.add(new HudModule());
 
         modules.add(new TimerModule());
 

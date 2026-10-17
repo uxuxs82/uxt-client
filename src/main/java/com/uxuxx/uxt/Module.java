@@ -24,6 +24,7 @@ public abstract class Module {
 
     public void toggle() {
         enabled = !enabled;
+        ConfigManager.markDirty();
         if (enabled) {
             onEnable();
         } else {
@@ -69,6 +70,7 @@ public abstract class Module {
 
         public void setValue(double value) {
             this.value = Math.max(min, Math.min(max, value));
+            ConfigManager.markDirty();
         }
 
         public void increment() {
