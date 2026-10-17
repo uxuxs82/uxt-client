@@ -15,6 +15,7 @@ public class ModuleManager {
         modules.add(new NoFallModule());
         modules.add(new KillAuraModule());
         modules.add(new AutoClickerModule());
+        modules.add(new AutoMineModule());
         modules.add(new VelocityModule());
         modules.add(new XrayModule());
         modules.add(new FullbrightModule());
