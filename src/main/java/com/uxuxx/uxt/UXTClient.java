@@ -23,7 +23,7 @@ public class UXTClient implements ClientModInitializer {
         guiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "Open GUI",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_RIGHT_SHIFT,
+            GLFW.GLFW_KEY_X,
             "UXT"
         ));
         
