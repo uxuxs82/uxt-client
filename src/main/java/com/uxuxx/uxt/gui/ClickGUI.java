@@ -86,7 +86,6 @@ public class ClickGUI extends Screen {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
     
-    @Override
     public boolean shouldPauseGame() {
         return false;
     }
