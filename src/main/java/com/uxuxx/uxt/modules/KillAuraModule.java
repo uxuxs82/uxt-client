@@ -9,21 +9,33 @@ import net.minecraft.util.Hand;
 
 public class KillAuraModule extends Module {
     
+    private Setting rangeSetting;
+    private int delay = 0;
+    
     public KillAuraModule() {
         super("KillAura");
+        rangeSetting = new Setting("Range", 4.0, 3.0, 6.0, 0.5);
+        settings.add(rangeSetting);
     }
     
     @Override
     public void onTick(MinecraftClient client) {
-        if (client.player == null || client.world == null) return;
+        if (!isEnabled() || client.player == null || client.world == null) return;
+        
+        if (delay > 0) {
+            delay--;
+            return;
+        }
+        
+        double range = rangeSetting.getValue();
         
         for (Entity entity : client.world.getEntities()) {
             if (entity instanceof LivingEntity && entity != client.player) {
-                if (entity instanceof PlayerEntity || entity.isAlive()) {
-                    double distance = client.player.distanceTo(entity);
-                    if (distance <= 4.5) {
+                if (client.player.distanceTo(entity) <= range) {
+                    if (entity instanceof PlayerEntity || entity instanceof LivingEntity) {
                         client.interactionManager.attackEntity(client.player, entity);
                         client.player.swingHand(Hand.MAIN_HAND);
+                        delay = 10;
                         break;
                     }
                 }
