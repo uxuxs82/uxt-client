@@ -37,7 +37,7 @@ public class ClickGUI extends Screen {
             fill(matrices, dragX + 2, yOffset + 2, dragX + width - 2, yOffset + moduleHeight - 2, bgColor);
             
             int textColor = module.isEnabled() ? 0x00FF00 : 0xAAAAAA;
-            drawString(matrices, textRenderer, module.getName(), dragX + 8, yOffset + 6, textColor);
+            textRenderer.draw(matrices, module.getName(), dragX + 8, yOffset + 6, textColor);
             
             yOffset += moduleHeight;
         }
