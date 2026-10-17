@@ -18,6 +18,11 @@ public class ClickGUI extends Screen {
     private int dragOffsetY;
     private Module expandedModule = null;
     
+    // Slider dragging
+    private Module.Setting dragSetting = null;
+    private int dragSliderX = 0;
+    private int dragSliderWidth = 1;
+    
     // Double click detection
     private Module lastClickedModule = null;
     private long lastClickTime = 0;
@@ -118,8 +123,10 @@ public class ClickGUI extends Screen {
                 }
                 
                 // Draw settings if expanded
+                yOffset += MODULE_HEIGHT;
+                
                 if (module == expandedModule && !module.getSettings().isEmpty()) {
-                    int settingY = yOffset + MODULE_HEIGHT;
+                    int settingY = yOffset;
                     for (Module.Setting setting : module.getSettings()) {
                         fill(matrices, colX + 10, settingY + 2, colX + COLUMN_WIDTH - 10, settingY + SETTING_HEIGHT - 2, 0xFF0a0a0a);
                         
@@ -140,9 +147,8 @@ public class ClickGUI extends Screen {
                         
                         settingY += SETTING_HEIGHT;
                     }
+                    yOffset += module.getSettings().size() * SETTING_HEIGHT;
                 }
-                
-                yOffset += MODULE_HEIGHT;
             }
         }
         
@@ -228,11 +234,16 @@ public class ClickGUI extends Screen {
                             double percent = (mouseX - sliderX) / sliderWidth;
                             double newValue = setting.getMin() + percent * (setting.getMax() - setting.getMin());
                             setting.setValue(newValue);
+                            
+                            dragSetting = setting;
+                            dragSliderX = sliderX;
+                            dragSliderWidth = sliderWidth;
                             return true;
                         }
                         
                         settingY += SETTING_HEIGHT;
                     }
+                    nextYOffset += module.getSettings().size() * SETTING_HEIGHT;
                 }
                 
                 yOffset = nextYOffset;
@@ -245,11 +256,19 @@ public class ClickGUI extends Screen {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         dragging = false;
+        dragSetting = null;
         return super.mouseReleased(mouseX, mouseY, button);
     }
     
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if (dragSetting != null) {
+            double percent = (mouseX - dragSliderX) / dragSliderWidth;
+            percent = Math.max(0, Math.min(1, percent));
+            double newValue = dragSetting.getMin() + percent * (dragSetting.getMax() - dragSetting.getMin());
+            dragSetting.setValue(newValue);
+            return true;
+        }
         if (dragging) {
             dragX = (int)(mouseX - dragOffsetX);
             dragY = (int)(mouseY - dragOffsetY);
