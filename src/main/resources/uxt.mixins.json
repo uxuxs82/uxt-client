@@ -5,9 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
   "client": [
-    "ClientPlayerEntityMixin",
-    "GameRendererMixin",
-    "BlockMixin"
+    "BlockMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "RenderTickCounterMixin"
   ],
   "injectors": {
     "defaultRequire": 1

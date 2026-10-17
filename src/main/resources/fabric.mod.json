@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "id": "uxt",
-  "version": "1.0.0",
+  "version": "${version}",
   "name": "UXT",
   "description": "Client-side utility mod",
   "authors": ["uxuxx"],
   "contact": {},
   "license": "MIT",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": ["com.uxuxx.uxt.UXTClient"]
   },
