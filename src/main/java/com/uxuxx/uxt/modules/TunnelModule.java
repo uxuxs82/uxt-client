@@ -2,35 +2,44 @@ package com.uxuxx.uxt.modules;
 
 import com.uxuxx.uxt.Module;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class TunnelModule extends Module {
-    
-    private Setting speedSetting;
-    
+
+    private Setting delaySetting;
+    private int cooldown = 0;
+
     public TunnelModule() {
         super("Tunnel");
-        speedSetting = new Setting("Speed", 1.0, 1.0, 5.0, 1.0);
-        settings.add(speedSetting);
+        delaySetting = new Setting("Delay", 1.0, 1.0, 10.0, 1.0);
+        settings.add(delaySetting);
     }
-    
+
     @Override
     public void onTick(MinecraftClient client) {
-        if (!isEnabled() || client.player == null) return;
-        
+        if (!isEnabled() || client.player == null || client.world == null || client.interactionManager == null) return;
+
+        if (cooldown > 0) {
+            cooldown--;
+            return;
+        }
+
         BlockPos playerPos = client.player.getBlockPos();
-        BlockPos target1 = playerPos.offset(client.player.getHorizontalFacing());
+        Direction facing = client.player.getHorizontalFacing();
+        BlockPos target1 = playerPos.offset(facing);
         BlockPos target2 = target1.up();
-        
-        if (!client.world.getBlockState(target1).isAir()) {
-            client.interactionManager.attackBlock(target1, Direction.UP);
-            client.player.swingHand(net.minecraft.util.Hand.MAIN_HAND);
+
+        if (breakBlock(client, target1) || breakBlock(client, target2)) {
+            cooldown = (int) delaySetting.getValue() - 1;
         }
-        
-        if (!client.world.getBlockState(target2).isAir()) {
-            client.interactionManager.attackBlock(target2, Direction.UP);
-            client.player.swingHand(net.minecraft.util.Hand.MAIN_HAND);
-        }
+    }
+
+    private boolean breakBlock(MinecraftClient client, BlockPos pos) {
+        if (client.world.getBlockState(pos).isAir()) return false;
+        client.interactionManager.updateBlockBreakingProgress(pos, Direction.UP);
+        client.player.swingHand(Hand.MAIN_HAND);
+        return true;
     }
 }

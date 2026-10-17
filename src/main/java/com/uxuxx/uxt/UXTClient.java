@@ -1,7 +1,9 @@
 package com.uxuxx.uxt;
 
 import com.uxuxx.uxt.gui.ClickGUI;
+import com.uxuxx.uxt.render.ESPRenderer;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -20,6 +22,8 @@ public class UXTClient implements ClientModInitializer {
     public void onInitializeClient() {
         moduleManager = new ModuleManager();
         clickGUI = new ClickGUI();
+
+        ESPRenderer.register();
 
         guiKeyX = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "Open GUI (X)",
@@ -40,6 +44,12 @@ public class UXTClient implements ClientModInitializer {
 
             while (guiKeyX.wasPressed() || guiKeyZ.wasPressed()) {
                 client.openScreen(clickGUI);
+            }
+        });
+
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+            for (Module module : moduleManager.getModules()) {
+                module.forceDisable();
             }
         });
     }

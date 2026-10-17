@@ -35,6 +35,13 @@ public abstract class Module {
         return settings;
     }
 
+    public void forceDisable() {
+        if (enabled) {
+            enabled = false;
+            onDisable();
+        }
+    }
+
     public void onEnable() {}
     public void onDisable() {}
     public void onTick(MinecraftClient client) {}
