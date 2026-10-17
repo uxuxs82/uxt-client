@@ -18,34 +18,26 @@ public class ClickGUI extends Screen {
     private int dragOffsetY;
     private Module expandedModule = null;
     
+    // Slider dragging
     private Module.Setting dragSetting = null;
     private int dragSliderX = 0;
     private int dragSliderWidth = 1;
     
+    // Double click detection
     private Module lastClickedModule = null;
     private long lastClickTime = 0;
     private static final long DOUBLE_CLICK_DELAY = 500;
     
+    // Info panel
     private boolean showInfo = false;
     
-    private static final int COLUMN_WIDTH = 160;
-    private static final int MODULE_HEIGHT = 20;
-    private static final int HEADER_HEIGHT = 24;
-    private static final int SETTING_HEIGHT = 18;
-    private static final int MODULES_PER_COLUMN = 10;
-    private static final int INFO_BUTTON_WIDTH = 45;
-    private static final int INFO_BUTTON_HEIGHT = 18;
-    
-    private static final int COLOR_HEADER = 0xFF0d1117;
-    private static final int COLOR_BG = 0xE0161b22;
-    private static final int COLOR_MODULE_OFF = 0xFF0d1117;
-    private static final int COLOR_MODULE_ON = 0xFF1c2128;
-    private static final int COLOR_BORDER = 0xFF30363d;
-    private static final int COLOR_TEXT_ENABLED = 0xFF58a6ff;
-    private static final int COLOR_TEXT_DISABLED = 0xFF8b949e;
-    private static final int COLOR_SETTING_BG = 0xFF010409;
-    private static final int COLOR_SLIDER_BG = 0xFF21262d;
-    private static final int COLOR_SLIDER_FILL = 0xFF58a6ff;
+    private static final int COLUMN_WIDTH = 150;
+    private static final int MODULE_HEIGHT = 18;
+    private static final int HEADER_HEIGHT = 20;
+    private static final int SETTING_HEIGHT = 16;
+    private static final int MODULES_PER_COLUMN = 9;
+    private static final int INFO_BUTTON_WIDTH = 40;
+    private static final int INFO_BUTTON_HEIGHT = 16;
     
     public ClickGUI() {
         super(new LiteralText("UXT"));
@@ -57,55 +49,53 @@ public class ClickGUI extends Screen {
         int totalColumns = (int) Math.ceil((double) modules.size() / MODULES_PER_COLUMN);
         int totalWidth = totalColumns * COLUMN_WIDTH;
         
+        // Calculate max height for expanded module
         int maxHeight = HEADER_HEIGHT + MODULES_PER_COLUMN * MODULE_HEIGHT;
         if (expandedModule != null && !expandedModule.getSettings().isEmpty()) {
             maxHeight += expandedModule.getSettings().size() * SETTING_HEIGHT;
         }
         
-        // Header background
-        fill(matrices, dragX, dragY, dragX + totalWidth, dragY + HEADER_HEIGHT, COLOR_HEADER);
-        drawLine(matrices, dragX, dragY + HEADER_HEIGHT, dragX + totalWidth, dragY + HEADER_HEIGHT, 0xFF30363d);
-        
-        drawCenteredText(matrices, textRenderer, "UXT Client", dragX + totalWidth / 2 - 50, dragY + 8, COLOR_TEXT_ENABLED);
+        // Header
+        fill(matrices, dragX, dragY, dragX + totalWidth, dragY + HEADER_HEIGHT, 0xFF1a1a1a);
+        drawCenteredText(matrices, textRenderer, "UXT Client - Press X or Z", dragX + totalWidth / 2, dragY + 6, 0xFFFFFF);
         
         // Info button
         int infoButtonX = dragX + totalWidth - INFO_BUTTON_WIDTH - 5;
-        int infoButtonY = dragY + 3;
-        fill(matrices, infoButtonX, infoButtonY, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY + INFO_BUTTON_HEIGHT, COLOR_MODULE_OFF);
-        drawLine(matrices, infoButtonX, infoButtonY, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY, COLOR_BORDER);
-        drawLine(matrices, infoButtonX, infoButtonY, infoButtonX, infoButtonY + INFO_BUTTON_HEIGHT, COLOR_BORDER);
-        drawLine(matrices, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY + INFO_BUTTON_HEIGHT, COLOR_BORDER);
-        drawLine(matrices, infoButtonX, infoButtonY + INFO_BUTTON_HEIGHT, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY + INFO_BUTTON_HEIGHT, COLOR_BORDER);
-        drawCenteredText(matrices, textRenderer, "INFO", infoButtonX + INFO_BUTTON_WIDTH / 2, infoButtonY + 4, COLOR_TEXT_ENABLED);
+        int infoButtonY = dragY + 2;
+        fill(matrices, infoButtonX, infoButtonY, infoButtonX + INFO_BUTTON_WIDTH, infoButtonY + INFO_BUTTON_HEIGHT, 0xFF3a3a3a);
+        drawCenteredText(matrices, textRenderer, "INFO", infoButtonX + INFO_BUTTON_WIDTH / 2, infoButtonY + 4, 0xFFFFFF);
         
-        // Main background
-        fill(matrices, dragX, dragY + HEADER_HEIGHT, dragX + totalWidth, dragY + maxHeight, COLOR_BG);
+        // Background
+        fill(matrices, dragX, dragY + HEADER_HEIGHT, dragX + totalWidth, dragY + maxHeight, 0xE0101010);
         
-        // Info panel
+        // Info panel overlay
         if (showInfo) {
-            int infoPanelWidth = 320;
-            int infoPanelHeight = 140;
+            int infoPanelWidth = 300;
+            int infoPanelHeight = 120;
             int infoPanelX = dragX + totalWidth / 2 - infoPanelWidth / 2;
-            int infoPanelY = dragY + HEADER_HEIGHT + 20;
+            int infoPanelY = dragY + maxHeight / 2 - infoPanelHeight / 2;
             
-            fill(matrices, infoPanelX, infoPanelY, infoPanelX + infoPanelWidth, infoPanelY + infoPanelHeight, 0xE0010409);
-            drawLine(matrices, infoPanelX, infoPanelY, infoPanelX + infoPanelWidth, infoPanelY, COLOR_BORDER);
-            drawLine(matrices, infoPanelX, infoPanelY, infoPanelX, infoPanelY + infoPanelHeight, COLOR_BORDER);
-            drawLine(matrices, infoPanelX + infoPanelWidth, infoPanelY, infoPanelX + infoPanelWidth, infoPanelY + infoPanelHeight, COLOR_BORDER);
-            drawLine(matrices, infoPanelX, infoPanelY + infoPanelHeight, infoPanelX + infoPanelWidth, infoPanelY + infoPanelHeight, COLOR_BORDER);
+            // Info background
+            fill(matrices, infoPanelX, infoPanelY, infoPanelX + infoPanelWidth, infoPanelY + infoPanelHeight, 0xE0000000);
+            fill(matrices, infoPanelX, infoPanelY, infoPanelX + infoPanelWidth, infoPanelY + 20, 0xFF2a2a2a);
             
-            drawCenteredText(matrices, textRenderer, "UXT Client Info", infoPanelX + infoPanelWidth / 2, infoPanelY + 10, COLOR_TEXT_ENABLED);
-            textRenderer.draw(matrices, "Author: uxuxx", infoPanelX + 20, infoPanelY + 35, COLOR_TEXT_DISABLED);
-            textRenderer.draw(matrices, "Version: 1.0.4", infoPanelX + 20, infoPanelY + 50, COLOR_TEXT_DISABLED);
-            textRenderer.draw(matrices, "Minecraft: 1.16.5", infoPanelX + 20, infoPanelY + 65, COLOR_TEXT_DISABLED);
-            textRenderer.draw(matrices, "Modules: " + modules.size(), infoPanelX + 20, infoPanelY + 80, COLOR_TEXT_DISABLED);
-            drawCenteredText(matrices, textRenderer, "Click anywhere to close", infoPanelX + infoPanelWidth / 2, infoPanelY + infoPanelHeight - 15, 0xFF6e7681);
+            // Info text
+            drawCenteredText(matrices, textRenderer, "UXT Client Info", infoPanelX + infoPanelWidth / 2, infoPanelY + 6, 0x00FF00);
+            textRenderer.draw(matrices, "Author: uxuxx", infoPanelX + 20, infoPanelY + 35, 0xFFFFFF);
+            textRenderer.draw(matrices, "Version: 1.0.6", infoPanelX + 20, infoPanelY + 50, 0xFFFFFF);
+            textRenderer.draw(matrices, "Minecraft: 1.16.5 (Fabric)", infoPanelX + 20, infoPanelY + 65, 0xFFFFFF);
+            textRenderer.draw(matrices, "Modules: " + modules.size(), infoPanelX + 20, infoPanelY + 80, 0xFFFFFF);
             
+            // Close button
+            String closeText = "Click anywhere to close";
+            drawCenteredText(matrices, textRenderer, closeText, infoPanelX + infoPanelWidth / 2, infoPanelY + infoPanelHeight - 15, 0xAAAAAA);
+            
+            // Don't draw modules when info is open
             super.render(matrices, mouseX, mouseY, delta);
             return;
         }
         
-        // Draw modules
+        // Draw modules in columns
         int moduleIndex = 0;
         for (int col = 0; col < totalColumns; col++) {
             int colX = dragX + col * COLUMN_WIDTH;
@@ -114,47 +104,50 @@ public class ClickGUI extends Screen {
             for (int row = 0; row < MODULES_PER_COLUMN && moduleIndex < modules.size(); row++, moduleIndex++) {
                 Module module = modules.get(moduleIndex);
                 
-                int bgColor = module.isEnabled() ? COLOR_MODULE_ON : COLOR_MODULE_OFF;
-                fill(matrices, colX, yOffset, colX + COLUMN_WIDTH, yOffset + MODULE_HEIGHT, bgColor);
-                drawLine(matrices, colX, yOffset, colX + COLUMN_WIDTH, yOffset, COLOR_BORDER);
-                drawLine(matrices, colX, yOffset, colX, yOffset + MODULE_HEIGHT, COLOR_BORDER);
-                drawLine(matrices, colX + COLUMN_WIDTH, yOffset, colX + COLUMN_WIDTH, yOffset + MODULE_HEIGHT, COLOR_BORDER);
+                // Module background
+                int bgColor = module.isEnabled() ? 0xFF2a2a2a : 0xFF1a1a1a;
+                fill(matrices, colX + 2, yOffset + 2, colX + COLUMN_WIDTH - 2, yOffset + MODULE_HEIGHT - 2, bgColor);
                 
-                int textColor = module.isEnabled() ? COLOR_TEXT_ENABLED : COLOR_TEXT_DISABLED;
+                // Module name
+                int textColor = module.isEnabled() ? 0x00FF00 : 0xAAAAAA;
                 String name = module.getName();
-                if (textRenderer.getWidth(name) > COLUMN_WIDTH - 35) {
-                    name = name.substring(0, Math.min(name.length(), 12)) + "..";
+                if (textRenderer.getWidth(name) > COLUMN_WIDTH - 30) {
+                    name = name.substring(0, Math.min(name.length(), 10)) + "..";
                 }
                 textRenderer.draw(matrices, name, colX + 8, yOffset + 6, textColor);
                 
+                // Settings indicator
                 if (!module.getSettings().isEmpty()) {
-                    String arrow = module == expandedModule ? "▼" : "▶";
-                    textRenderer.draw(matrices, arrow, colX + COLUMN_WIDTH - 15, yOffset + 6, COLOR_TEXT_DISABLED);
+                    String arrow = module == expandedModule ? "v" : ">";
+                    textRenderer.draw(matrices, arrow, colX + COLUMN_WIDTH - 15, yOffset + 6, 0xAAAAAA);
                 }
                 
+                // Draw settings if expanded
                 yOffset += MODULE_HEIGHT;
                 
                 if (module == expandedModule && !module.getSettings().isEmpty()) {
                     int settingY = yOffset;
                     for (Module.Setting setting : module.getSettings()) {
-                        fill(matrices, colX, settingY, colX + COLUMN_WIDTH, settingY + SETTING_HEIGHT, COLOR_SETTING_BG);
-                        drawLine(matrices, colX, settingY, colX + COLUMN_WIDTH, settingY, COLOR_BORDER);
+                        fill(matrices, colX + 10, settingY + 2, colX + COLUMN_WIDTH - 10, settingY + SETTING_HEIGHT - 2, 0xFF0a0a0a);
                         
+                        // Setting name and value
                         double value = setting.getValue();
                         String valueText = value == Math.floor(value)
                             ? String.format("%.0f", value)
                             : String.format("%.1f", value);
                         String settingText = setting.getName() + ": " + valueText;
-                        textRenderer.draw(matrices, settingText, colX + 8, settingY + 4, COLOR_TEXT_DISABLED);
+                        textRenderer.draw(matrices, settingText, colX + 15, settingY + 5, 0xCCCCCC);
                         
-                        int sliderX = colX + 8;
-                        int sliderY = settingY + SETTING_HEIGHT - 6;
-                        int sliderWidth = COLUMN_WIDTH - 16;
+                        // Slider bar
+                        int sliderX = colX + 15;
+                        int sliderY = settingY + SETTING_HEIGHT - 5;
+                        int sliderWidth = COLUMN_WIDTH - 30;
                         
-                        fill(matrices, sliderX, sliderY, sliderX + sliderWidth, sliderY + 3, COLOR_SLIDER_BG);
+                        fill(matrices, sliderX, sliderY, sliderX + sliderWidth, sliderY + 2, 0xFF555555);
+                        
                         double percent = (setting.getValue() - setting.getMin()) / (setting.getMax() - setting.getMin());
                         int filledWidth = (int)(sliderWidth * percent);
-                        fill(matrices, sliderX, sliderY, sliderX + filledWidth, sliderY + 3, COLOR_SLIDER_FILL);
+                        fill(matrices, sliderX, sliderY, sliderX + filledWidth, sliderY + 2, 0xFF00FF00);
                         
                         settingY += SETTING_HEIGHT;
                     }
@@ -163,21 +156,12 @@ public class ClickGUI extends Screen {
             }
         }
         
-        drawLine(matrices, dragX, dragY + maxHeight, dragX + totalWidth, dragY + maxHeight, COLOR_BORDER);
-        
         super.render(matrices, mouseX, mouseY, delta);
-    }
-    
-    private void drawLine(MatrixStack matrices, int x1, int y1, int x2, int y2, int color) {
-        if (x1 == x2) {
-            fill(matrices, x1, Math.min(y1, y2), x1 + 1, Math.max(y1, y2), color);
-        } else {
-            fill(matrices, Math.min(x1, x2), y1, Math.max(x1, x2), y1 + 1, color);
-        }
     }
     
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        // If info panel is open, close it on any click
         if (showInfo) {
             showInfo = false;
             return true;
@@ -186,15 +170,18 @@ public class ClickGUI extends Screen {
         List<Module> modules = UXTClient.moduleManager.getModules();
         int totalColumns = (int) Math.ceil((double) modules.size() / MODULES_PER_COLUMN);
         int totalWidth = totalColumns * COLUMN_WIDTH;
+        int maxHeight = HEADER_HEIGHT + MODULES_PER_COLUMN * MODULE_HEIGHT;
         
+        // Check info button click
         int infoButtonX = dragX + totalWidth - INFO_BUTTON_WIDTH - 5;
-        int infoButtonY = dragY + 3;
+        int infoButtonY = dragY + 2;
         if (mouseX >= infoButtonX && mouseX <= infoButtonX + INFO_BUTTON_WIDTH &&
             mouseY >= infoButtonY && mouseY <= infoButtonY + INFO_BUTTON_HEIGHT) {
             showInfo = true;
             return true;
         }
         
+        // Check header drag
         if (mouseX >= dragX && mouseX <= dragX + totalWidth && mouseY >= dragY && mouseY <= dragY + HEADER_HEIGHT) {
             dragging = true;
             dragOffsetX = (int)(mouseX - dragX);
@@ -202,6 +189,7 @@ public class ClickGUI extends Screen {
             return true;
         }
         
+        // Check module clicks
         int moduleIndex = 0;
         for (int col = 0; col < totalColumns; col++) {
             int colX = dragX + col * COLUMN_WIDTH;
@@ -210,22 +198,27 @@ public class ClickGUI extends Screen {
             for (int row = 0; row < MODULES_PER_COLUMN && moduleIndex < modules.size(); row++, moduleIndex++) {
                 Module module = modules.get(moduleIndex);
                 
+                // Check module click
                 if (mouseX >= colX && mouseX <= colX + COLUMN_WIDTH && 
                     mouseY >= yOffset && mouseY <= yOffset + MODULE_HEIGHT) {
-                    if (button == 0) {
+                    if (button == 0) { // Left click
                         long currentTime = System.currentTimeMillis();
+                        
+                        // Check for double click
                         if (module == lastClickedModule && 
                             currentTime - lastClickTime < DOUBLE_CLICK_DELAY &&
                             !module.getSettings().isEmpty()) {
+                            // Double click - open settings
                             expandedModule = expandedModule == module ? null : module;
                             lastClickedModule = null;
                             lastClickTime = 0;
                         } else {
+                            // Single click - toggle module
                             module.toggle();
                             lastClickedModule = module;
                             lastClickTime = currentTime;
                         }
-                    } else if (button == 1 && !module.getSettings().isEmpty()) {
+                    } else if (button == 1 && !module.getSettings().isEmpty()) { // Right click - open settings
                         expandedModule = expandedModule == module ? null : module;
                     }
                     return true;
@@ -233,11 +226,13 @@ public class ClickGUI extends Screen {
                 
                 int nextYOffset = yOffset + MODULE_HEIGHT;
                 
+                // Check setting slider clicks
                 if (module == expandedModule && !module.getSettings().isEmpty()) {
                     int settingY = nextYOffset;
                     for (Module.Setting setting : module.getSettings()) {
-                        int sliderX = colX + 8;
-                        int sliderWidth = COLUMN_WIDTH - 16;
+                        int sliderX = colX + 15;
+                        int sliderY = settingY + SETTING_HEIGHT - 5;
+                        int sliderWidth = COLUMN_WIDTH - 30;
                         
                         if (mouseX >= sliderX && mouseX <= sliderX + sliderWidth && 
                             mouseY >= settingY && mouseY <= settingY + SETTING_HEIGHT) {

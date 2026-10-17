@@ -17,6 +17,7 @@ public class UXTClient implements ClientModInitializer {
 
     private static KeyBinding guiKeyX;
     private static KeyBinding guiKeyZ;
+    private static boolean gammaChecked = false;
 
     @Override
     public void onInitializeClient() {
@@ -40,6 +41,13 @@ public class UXTClient implements ClientModInitializer {
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!gammaChecked) {
+                gammaChecked = true;
+                if (client.options.gamma < 0.0 || client.options.gamma > 1.0) {
+                    client.options.gamma = 0.5;
+                }
+            }
+
             moduleManager.onTick(client);
 
             while (guiKeyX.wasPressed() || guiKeyZ.wasPressed()) {
