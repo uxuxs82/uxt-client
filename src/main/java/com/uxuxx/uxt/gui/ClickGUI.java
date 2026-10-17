@@ -87,7 +87,7 @@ public class ClickGUI extends Screen {
     }
     
     @Override
-    public boolean shouldPause() {
+    public boolean shouldPauseGame() {
         return false;
     }
 }
