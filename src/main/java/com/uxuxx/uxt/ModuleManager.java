@@ -10,15 +10,40 @@ public class ModuleManager {
     private List<Module> modules = new ArrayList<>();
     
     public ModuleManager() {
+        // Combat
+        modules.add(new KillAuraModule());
+        modules.add(new AimbotModule());
+        modules.add(new VelocityModule());
+        modules.add(new AntiKnockbackModule());
+        
+        // Movement
         modules.add(new SpeedModule());
         modules.add(new SprintModule());
+        modules.add(new AutoSprintModule());
         modules.add(new NoFallModule());
-        modules.add(new KillAuraModule());
-        modules.add(new AutoClickerModule());
-        modules.add(new AutoMineModule());
-        modules.add(new VelocityModule());
+        modules.add(new StepModule());
+        modules.add(new FreecamModule());
+        
+        // Player
+        modules.add(new AutoEatModule());
+        modules.add(new AutoArmorModule());
+        modules.add(new AntiFireModule());
+        modules.add(new AntiAFKModule());
+        
+        // World
+        modules.add(new ScaffoldModule());
+        modules.add(new TunnelModule());
+        modules.add(new FastPlaceModule());
+        modules.add(new AutoFishModule());
+        
+        // Render
         modules.add(new XrayModule());
         modules.add(new FullbrightModule());
+        modules.add(new ESPModule());
+        modules.add(new ChestESPModule());
+        
+        // Misc
+        modules.add(new TimerModule());
     }
     
     public List<Module> getModules() {
