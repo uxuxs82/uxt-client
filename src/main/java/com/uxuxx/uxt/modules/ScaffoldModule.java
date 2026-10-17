@@ -28,14 +28,14 @@ public class ScaffoldModule extends Module {
         
         if (!state.isAir()) return;
         
-        // Find a block to place
+        
         int slot = findBlockSlot(client);
         if (slot == -1) return;
         
         int prevSlot = client.player.inventory.selectedSlot;
         client.player.inventory.selectedSlot = slot;
         
-        // Find a neighbor block to click on
+        
         BlockPos[] neighbors = {
             below.north(), below.south(), below.east(), below.west(), below.down()
         };

@@ -22,12 +22,12 @@ public class AutoFishModule extends Module {
             waitTicks++;
             
             if (waitTicks > 20 && bobber.getVelocity().length() < 0.01) {
-                // Fish caught, reel in
+                
                 client.options.keyUse.setPressed(true);
                 waitTicks = 0;
             }
         } else {
-            // Cast
+            
             if (waitTicks > 10) {
                 client.options.keyUse.setPressed(true);
                 waitTicks = 0;

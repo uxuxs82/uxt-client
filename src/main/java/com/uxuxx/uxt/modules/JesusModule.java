@@ -15,7 +15,7 @@ public class JesusModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null) return;
         
-        // Walk on water
+        
         BlockPos below = client.player.getBlockPos().down();
         if (client.world.getBlockState(below).getFluidState().isStill() || 
             client.world.getBlockState(below).getFluidState().isEmpty() == false) {

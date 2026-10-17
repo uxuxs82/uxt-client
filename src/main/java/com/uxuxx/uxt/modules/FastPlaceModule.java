@@ -20,7 +20,7 @@ public class FastPlaceModule extends Module {
             field.setAccessible(true);
             field.setInt(client.interactionManager, 0);
         } catch (Exception e) {
-            // Ignore
+            
         }
     }
 }

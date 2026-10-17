@@ -17,7 +17,7 @@ public class VelocityModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null) return;
         
-        // Velocity обрабатывается через mixin
+        
     }
     
     public double getMultiplier() {

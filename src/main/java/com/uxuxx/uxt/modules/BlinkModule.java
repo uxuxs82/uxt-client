@@ -14,8 +14,8 @@ public class BlinkModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null) return;
         
-        // Blink effect - freeze position on server while moving client-side
-        // Send old position packets
+        
+        
         if (client.getNetworkHandler() != null) {
             client.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionOnly(
                 client.player.getX(), 

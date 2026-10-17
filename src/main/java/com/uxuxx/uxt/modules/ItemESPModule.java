@@ -20,7 +20,7 @@ public class ItemESPModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null || client.world == null) return;
         
-        // Highlight dropped items - rendering handled by mixin
+        
         for (Entity entity : client.world.getEntities()) {
             if (entity instanceof ItemEntity) {
                 double dist = client.player.distanceTo(entity);

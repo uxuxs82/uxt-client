@@ -14,8 +14,8 @@ public class NoSlowModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null) return;
         
-        // Remove slowdown when using items (eating, blocking, etc)
-        // This is usually handled by mixin, but we can set movement multiplier
+        
+        
         if (client.player.isUsingItem()) {
             client.player.input.movementForward *= 5.0f;
             client.player.input.movementSideways *= 5.0f;

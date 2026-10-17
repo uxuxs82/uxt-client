@@ -24,7 +24,7 @@ public class AutoArmorModule extends Module {
         tickCounter = 0;
         
         for (int i = 0; i < 4; i++) {
-            EquipmentSlot slot = EquipmentSlot.values()[i + 2]; // HEAD, CHEST, LEGS, FEET
+            EquipmentSlot slot = EquipmentSlot.values()[i + 2]; 
             ItemStack current = client.player.getEquippedStack(slot);
             
             int bestSlot = findBestArmor(client, i);

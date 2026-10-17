@@ -15,7 +15,7 @@ public class XrayModule extends Module {
     public XrayModule() {
         super("Xray");
         
-        // Ores
+        
         xrayBlocks.add(Blocks.DIAMOND_ORE);
         xrayBlocks.add(Blocks.IRON_ORE);
         xrayBlocks.add(Blocks.GOLD_ORE);
@@ -26,7 +26,7 @@ public class XrayModule extends Module {
         xrayBlocks.add(Blocks.ANCIENT_DEBRIS);
         xrayBlocks.add(Blocks.NETHER_QUARTZ_ORE);
         
-        // Trees
+        
         xrayBlocks.add(Blocks.OAK_LOG);
         xrayBlocks.add(Blocks.SPRUCE_LOG);
         xrayBlocks.add(Blocks.BIRCH_LOG);

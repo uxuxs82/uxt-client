@@ -27,6 +27,6 @@ public class ESPModule extends Module {
     
     @Override
     public void onTick(MinecraftClient client) {
-        // ESP rendering handled by mixin
+        
     }
 }
