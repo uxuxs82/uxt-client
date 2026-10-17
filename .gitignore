@@ -1,2 +1,5 @@
-.jar
+*.jar
 uxt-1.0.0/
+build/
+.gradle/
+.idea/
