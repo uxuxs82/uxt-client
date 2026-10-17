@@ -43,6 +43,8 @@ public class ModuleManager {
         modules.add(new MobESPModule());
 
         modules.add(new TimerModule());
+
+        modules.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
     }
 
     public List<Module> getModules() {

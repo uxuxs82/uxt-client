@@ -28,5 +28,5 @@ jobs:
     - name: Upload JAR
       uses: actions/upload-artifact@v4
       with:
-        name: uxt-1.0.3
+        name: uxt-1.0.4
         path: build/libs/*.jar

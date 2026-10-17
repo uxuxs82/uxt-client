@@ -58,7 +58,11 @@ public class ESPRenderer {
                     pos.getX(), pos.getY(), pos.getZ(),
                     pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0
                 );
-                emitBox(buffer, box, 1.0f, 0.6f, 0.0f, 0.8f);
+                emitBox(buffer, box,
+                    (float) (ChestESPModule.colorR / 255.0),
+                    (float) (ChestESPModule.colorG / 255.0),
+                    (float) (ChestESPModule.colorB / 255.0),
+                    0.8f);
             }
         }
 
@@ -67,7 +71,11 @@ public class ESPRenderer {
             for (PlayerEntity player : client.world.getPlayers()) {
                 if (player == client.player) continue;
                 if (client.player.distanceTo(player) > range) continue;
-                emitBox(buffer, player.getBoundingBox(), 1.0f, 0.2f, 0.2f, 0.8f);
+                emitBox(buffer, player.getBoundingBox(),
+                    (float) (ESPModule.colorR / 255.0),
+                    (float) (ESPModule.colorG / 255.0),
+                    (float) (ESPModule.colorB / 255.0),
+                    0.8f);
             }
         }
 

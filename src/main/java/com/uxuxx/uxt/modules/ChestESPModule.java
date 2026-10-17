@@ -13,15 +13,27 @@ public class ChestESPModule extends Module {
 
     public static boolean enabled = false;
     public static double range = 32.0;
+    public static double colorR = 255.0;
+    public static double colorG = 153.0;
+    public static double colorB = 0.0;
     public static List<BlockPos> chestPositions = new ArrayList<>();
 
     private Setting rangeSetting;
+    private Setting redSetting;
+    private Setting greenSetting;
+    private Setting blueSetting;
     private int tickCounter = 0;
 
     public ChestESPModule() {
         super("ChestESP");
-        rangeSetting = new Setting("Range", 32.0, 16.0, 48.0, 8.0);
+        rangeSetting = new Setting("Range", 32.0, 16.0, 64.0, 8.0);
+        redSetting = new Setting("Red", 255.0, 0.0, 255.0, 15.0);
+        greenSetting = new Setting("Green", 153.0, 0.0, 255.0, 15.0);
+        blueSetting = new Setting("Blue", 0.0, 0.0, 255.0, 15.0);
         settings.add(rangeSetting);
+        settings.add(redSetting);
+        settings.add(greenSetting);
+        settings.add(blueSetting);
     }
 
     @Override
@@ -40,6 +52,9 @@ public class ChestESPModule extends Module {
         if (!isEnabled() || client.player == null || client.world == null) return;
 
         range = rangeSetting.getValue();
+        colorR = redSetting.getValue();
+        colorG = greenSetting.getValue();
+        colorB = blueSetting.getValue();
 
         tickCounter++;
         if (tickCounter < 20) return;

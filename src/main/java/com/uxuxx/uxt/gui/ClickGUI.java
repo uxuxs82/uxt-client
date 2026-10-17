@@ -82,7 +82,7 @@ public class ClickGUI extends Screen {
             // Info text
             drawCenteredText(matrices, textRenderer, "UXT Client Info", infoPanelX + infoPanelWidth / 2, infoPanelY + 6, 0x00FF00);
             textRenderer.draw(matrices, "Author: uxuxx", infoPanelX + 20, infoPanelY + 35, 0xFFFFFF);
-            textRenderer.draw(matrices, "Version: 1.0.3", infoPanelX + 20, infoPanelY + 50, 0xFFFFFF);
+            textRenderer.draw(matrices, "Version: 1.0.4", infoPanelX + 20, infoPanelY + 50, 0xFFFFFF);
             textRenderer.draw(matrices, "Minecraft: 1.16.5 (Fabric)", infoPanelX + 20, infoPanelY + 65, 0xFFFFFF);
             textRenderer.draw(matrices, "Modules: " + modules.size(), infoPanelX + 20, infoPanelY + 80, 0xFFFFFF);
             
@@ -131,7 +131,11 @@ public class ClickGUI extends Screen {
                         fill(matrices, colX + 10, settingY + 2, colX + COLUMN_WIDTH - 10, settingY + SETTING_HEIGHT - 2, 0xFF0a0a0a);
                         
                         // Setting name and value
-                        String settingText = setting.getName() + ": " + String.format("%.1f", setting.getValue());
+                        double value = setting.getValue();
+                        String valueText = value == Math.floor(value)
+                            ? String.format("%.0f", value)
+                            : String.format("%.1f", value);
+                        String settingText = setting.getName() + ": " + valueText;
                         textRenderer.draw(matrices, settingText, colX + 15, settingY + 5, 0xCCCCCC);
                         
                         // Slider bar
