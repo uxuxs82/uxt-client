@@ -21,7 +21,10 @@ public class ModuleManager {
         modules.add(new SprintModule());
         modules.add(new AutoSprintModule());
         modules.add(new NoFallModule());
+        modules.add(new NoSlowModule());
         modules.add(new StepModule());
+        modules.add(new JesusModule());
+        modules.add(new BlinkModule());
         modules.add(new FreecamModule());
         
         // Player
@@ -41,6 +44,8 @@ public class ModuleManager {
         modules.add(new FullbrightModule());
         modules.add(new ESPModule());
         modules.add(new ChestESPModule());
+        modules.add(new ItemESPModule());
+        modules.add(new MobESPModule());
         
         // Misc
         modules.add(new TimerModule());

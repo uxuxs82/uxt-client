@@ -18,6 +18,11 @@ public class ClickGUI extends Screen {
     private int dragOffsetY;
     private Module expandedModule = null;
     
+    // Double click detection
+    private Module lastClickedModule = null;
+    private long lastClickTime = 0;
+    private static final long DOUBLE_CLICK_DELAY = 500; // milliseconds
+    
     private static final int COLUMN_WIDTH = 150;
     private static final int MODULE_HEIGHT = 18;
     private static final int HEADER_HEIGHT = 20;
@@ -133,10 +138,23 @@ public class ClickGUI extends Screen {
                 // Check module click
                 if (mouseX >= colX && mouseX <= colX + COLUMN_WIDTH && 
                     mouseY >= yOffset && mouseY <= yOffset + MODULE_HEIGHT) {
-                    if (button == 0) { // Left click - toggle
-                        module.toggle();
-                    } else if (button == 1 && !module.getSettings().isEmpty()) { // Right click - expand
-                        expandedModule = expandedModule == module ? null : module;
+                    if (button == 0) { // Left click
+                        long currentTime = System.currentTimeMillis();
+                        
+                        // Check for double click
+                        if (module == lastClickedModule && 
+                            currentTime - lastClickTime < DOUBLE_CLICK_DELAY &&
+                            !module.getSettings().isEmpty()) {
+                            // Double click - open settings
+                            expandedModule = expandedModule == module ? null : module;
+                            lastClickedModule = null;
+                            lastClickTime = 0;
+                        } else {
+                            // Single click - toggle module
+                            module.toggle();
+                            lastClickedModule = module;
+                            lastClickTime = currentTime;
+                        }
                     }
                     return true;
                 }
