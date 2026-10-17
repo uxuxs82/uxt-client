@@ -90,7 +90,7 @@ public class AutoMineModule extends Module {
             client.player.input.movementForward = 0;
             
             // Look at block
-            Vec3d eyePos = client.player.getEyePos();
+            Vec3d eyePos = client.player.getCameraPosVec(1.0f);
             Vec3d lookVec = targetVec.subtract(eyePos).normalize();
             
             float yaw = (float) Math.toDegrees(Math.atan2(lookVec.z, lookVec.x)) - 90;
