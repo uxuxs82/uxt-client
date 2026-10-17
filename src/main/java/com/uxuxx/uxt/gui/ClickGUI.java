@@ -82,7 +82,7 @@ public class ClickGUI extends Screen {
             // Info text
             drawCenteredText(matrices, textRenderer, "UXT Client Info", infoPanelX + infoPanelWidth / 2, infoPanelY + 6, 0x00FF00);
             textRenderer.draw(matrices, "Author: uxuxx", infoPanelX + 20, infoPanelY + 35, 0xFFFFFF);
-            textRenderer.draw(matrices, "Version: 1.0.0", infoPanelX + 20, infoPanelY + 50, 0xFFFFFF);
+            textRenderer.draw(matrices, "Version: 1.0.2", infoPanelX + 20, infoPanelY + 50, 0xFFFFFF);
             textRenderer.draw(matrices, "Minecraft: 1.16.5 (Fabric)", infoPanelX + 20, infoPanelY + 65, 0xFFFFFF);
             textRenderer.draw(matrices, "Modules: " + modules.size(), infoPanelX + 20, infoPanelY + 80, 0xFFFFFF);
             
