@@ -42,7 +42,7 @@ public class ClickGUI extends Screen {
         
         // Header
         fill(matrices, dragX, dragY, dragX + totalWidth, dragY + HEADER_HEIGHT, 0xFF1a1a1a);
-        drawCenteredText(matrices, textRenderer, "UXT Client - Press X", dragX + totalWidth / 2, dragY + 6, 0xFFFFFF);
+        drawCenteredText(matrices, textRenderer, "UXT Client - Press X or Z", dragX + totalWidth / 2, dragY + 6, 0xFFFFFF);
         
         // Background
         fill(matrices, dragX, dragY + HEADER_HEIGHT, dragX + totalWidth, dragY + maxHeight, 0xE0101010);

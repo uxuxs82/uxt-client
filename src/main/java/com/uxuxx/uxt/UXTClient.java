@@ -13,24 +13,32 @@ public class UXTClient implements ClientModInitializer {
     public static ModuleManager moduleManager;
     public static ClickGUI clickGUI;
     
-    private static KeyBinding guiKey;
+    private static KeyBinding guiKeyX;
+    private static KeyBinding guiKeyZ;
     
     @Override
     public void onInitializeClient() {
         moduleManager = new ModuleManager();
         clickGUI = new ClickGUI();
         
-        guiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "Open GUI",
+        guiKeyX = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "Open GUI (X)",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_X,
+            "UXT"
+        ));
+        
+        guiKeyZ = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "Open GUI (Z)",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_Z,
             "UXT"
         ));
         
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             moduleManager.onTick(client);
             
-            while (guiKey.wasPressed()) {
+            while (guiKeyX.wasPressed() || guiKeyZ.wasPressed()) {
                 client.openScreen(clickGUI);
             }
         });
